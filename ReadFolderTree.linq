@@ -77,17 +77,23 @@ public static void TraverseTree(string root)
 
 				var fileName = Path.GetFileNameWithoutExtension(fi.Name);
 
-				if (fileName == "template")
+				if (fileName.StartsWith("template"))
 				{
 
-				}
+					string path = $"{currentDir}//{fi.Name}";
+					string readContent = File.ReadAllText(path);
+					string newContent = readContent.Replace("$$name$$", "mdi320");
+					Console.WriteLine(newContent);
 
-				//using (FileStream fs = File.OpenRead($"{currentDir}\\template.ts"))
-				//using (TextReader reader = new StreamReader(fs))
-				//{
-				//	Console.WriteLine(reader.ReadLine());       // Line1
-				//	Console.WriteLine(reader.ReadLine());       // Line2
-				//}
+					var fileNameTemplate = fi.Name.Split("_");
+					if (fileNameTemplate.Count() > 1)
+					{
+						string newFileName = string.Format(fileNameTemplate[1], "mdi320");
+						string outputPath = $"{currentDir}//{newFileName}";
+						File.WriteAllText(outputPath, newContent, Encoding.UTF8);
+					}
+
+				}
 			}
 			catch (System.IO.FileNotFoundException e)
 			{
