@@ -2,14 +2,21 @@
 
 void Main()
 {
-	TraverseTree("D:\\TemplateFolder\\src\\app");
+	TraverseTree("D:\\TemplateFolder\\src\\app", "D:\\TemplateFolder\\src\\dist");
 }
 
-public static void TraverseTree(string root)
+public static void TraverseTree(string root, string outputDir)
 {
 	// Data structure to hold names of subfolders to be
 	// examined for files.
 	Stack<string> dirs = new Stack<string>(20);
+
+	bool exists = System.IO.Directory.Exists(outputDir);
+
+	if (!exists)
+	{
+		System.IO.Directory.CreateDirectory(outputDir);
+	}
 
 	if (!System.IO.Directory.Exists(root))
 	{
@@ -25,6 +32,13 @@ public static void TraverseTree(string root)
 		try
 		{
 			subDirs = System.IO.Directory.GetDirectories(currentDir);
+			var folderName = new DirectoryInfo(currentDir).Name;
+			var folderPath = $"{outputDir}//{folderName}";
+			bool folderExists = Directory.Exists(folderPath);
+			if (!folderExists)
+			{
+				Directory.CreateDirectory(folderPath);
+			}
 		}
 		// An UnauthorizedAccessException exception will be thrown if we do not have
 		// discovery permission on a folder or file. It may or may not be acceptable
